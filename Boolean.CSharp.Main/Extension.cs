@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace Boolean.CSharp.Main
 {
+    /*
     public class Extension
     {
         private Core _core;
@@ -15,4 +16,5 @@ namespace Boolean.CSharp.Main
             Core? core = new Core();
         }                      
     }
+    */
 }
