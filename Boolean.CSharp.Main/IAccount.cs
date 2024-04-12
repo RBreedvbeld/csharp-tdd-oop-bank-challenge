@@ -10,7 +10,7 @@ namespace Boolean.CSharp.Main
 {
     internal interface IAccount
     {
-        // bool Deposit(float amount, EAccountTypes accountType);
+        bool Deposit(float amount, EAccountTypes accountType, float balance);
         bool Withdraw(float amount, EAccountTypes accountType, float balance);
     }
 }

@@ -11,9 +11,7 @@ namespace Boolean.CSharp.Main
     {
         private Dictionary<string, Account> _accounts = new Dictionary<string, Account>();
         public Dictionary<string, Account> accounts => _accounts;
-
         private float _balance = 1000;
-
         // private string _accountNumber;
 
         // Getters
@@ -25,7 +23,7 @@ namespace Boolean.CSharp.Main
         public float Balance => _balance;
 
 
-        public Account(string accountNumber, string usersName)
+        public Account(string accountNumber, string usersName, EAccountTypes accountType)
         {
             //_accounts.Add(new SavingsAccount());
             //_accounts.Add(new CheckingAccount());
@@ -33,9 +31,10 @@ namespace Boolean.CSharp.Main
             this.UserName = usersName;
         }
 
-        public bool AddAccount(string accountNumber, string username)
-        {
-            Account newAccount = new Account(accountNumber, username); 
+        public bool AddAccount(string accountNumber, string username, EAccountTypes accountType)
+        { 
+            // TODO check the double account nr, find a way to add a User to the account number
+            Account newAccount = new Account(accountNumber, username, accountType); 
             accounts.Add(accountNumber, newAccount);
             return true;
         }
@@ -47,22 +46,24 @@ namespace Boolean.CSharp.Main
 
         public bool Withdraw(float amount, EAccountTypes accountType, float balance)
         {
+            // withdraw check for Checking and Saving account. 
             if(accountType == EAccountTypes.Checking || accountType == EAccountTypes.Saving)
             {
-                if (amount > 0 && (balance - amount) >= 0)
+                if (amount > 0 && (_balance - amount) >= 0)
                 {
                     Console.WriteLine($"Withdrawing {amount} from {accountType} account:");
-                    balance -= amount;
+                    //_balance -= amount
+                    amount -= _balance;
                     // update the balance after withdrawing
                     _balance = balance;
                     Console.WriteLine($"Your new balance after the witdraw is $ {_balance}.");
                     return true;
-                } else
+                }
+                else
                 {
                     Console.WriteLine("Not enough balance or amount is bigger than balance");
                     return false;
                 }
-
             } 
             else 
             {
@@ -71,8 +72,36 @@ namespace Boolean.CSharp.Main
             return false;
         }
 
+        public bool Deposit(float amount, EAccountTypes accountType, float balance)
+        {
+            // deposit check for Checking and Saving account. 
+            if (accountType == EAccountTypes.Checking || accountType == EAccountTypes.Saving)
+            {
+                if (amount > 0 && (_balance + amount) > _balance)
+                {
+                    Console.WriteLine($"Deposted {amount} to {accountType} account:");
+                    // add the amount to the balance
+                    _balance += amount;
+                    // update the balance after withdrawing
+                    _balance = balance;
+                    Console.WriteLine($"Your new balance after the deposit is: $ {_balance}.");
+                    return true;
+                }
+                else
+                {
+                    Console.WriteLine("Amount to deposit was negative or 0.");
+                    return false;
+                }
+            }
+            else
+            {
+                Console.WriteLine("Invalid Account Type.");
+            }
+            return false;
+        }
 
 
-      
+
+
     }
 }
